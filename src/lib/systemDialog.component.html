@@ -1,0 +1,33 @@
+
+
+<div class="backmask animation" 
+    *ngIf=" visible "  
+    [class.fadeIn]=" backmaskState === 'startShow' " 
+    [class.fadeOut]=" backmaskState === 'startHide' ">
+</div>
+
+
+
+
+
+<div class="dialog" [hidden]=" !visible " >
+        
+  <div class="wrapper-content animation"  [class.fadeInDown]=" dialogState === 'startShow' " [class.fadeOutUp]=" dialogState === 'startHide' ">
+        
+    <div class="content">
+      <ng-template #dynamicContent ></ng-template>
+    </div>
+    
+
+    <div class="animation" [class.fadeInUp]=" dialogState === 'startShow' " [class.fadeOutDown]=" dialogState === 'startHide' ">
+      <a class="close-button" (click)=" closeDialog($event) "  >
+        <i class="material-icons">clear</i>
+      </a>
+    </div>
+    
+        
+  </div>
+</div>      
+
+
+
