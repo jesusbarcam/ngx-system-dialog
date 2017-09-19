@@ -11,14 +11,13 @@ import { DynamicDialogComponent } from './components/dynamicDialog/dynamicDialog
 
 export class AppComponent {
 
+
   constructor(private systemDialog: SystemDialogService) {}// Constructor
-
-
 
   public openDialog() {
 
-    this.systemDialog.createDialog( DynamicDialogComponent )
-    .subscribe((result) => {
+    this.systemDialog.createDialog( DynamicDialogComponent ).result
+    .subscribe(( result ) => {
       console.log( 'CLOSE AND RESULT OF SYSTEM DIALOG! ' );
     });
 

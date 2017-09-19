@@ -13,7 +13,8 @@ type StatesOfDialog =  'startShow' | 'startHide' | 'wait'  ;
 @Component({
   selector: 'system-dialog',
   templateUrl: './systemDialog.component.html',
-  styleUrls: ['./systemDialog.component.scss']
+  styleUrls: ['./systemDialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })// Component
 
 
@@ -37,14 +38,15 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
    * @method
    * @constructor
    */
-  constructor(private dialogService: SystemDialogService,
-              private changeDetector: ChangeDetectorRef ) {
+  constructor( private dialogService: SystemDialogService,
+               private changeDetector: ChangeDetectorRef ) {
 
     this.visible = false;
     this.backmaskState = 'wait';
     this.dialogState = 'wait';
 
   }// Constructor
+
 
 
 
@@ -61,13 +63,16 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
 
 
 
+
   /**
    * @method
    * @public
    * @lifecycle
    */
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if ( this.subscription ) {
+      this.subscription.unsubscribe();
+    }// If
   }// OnDestroy
 
 
@@ -81,7 +86,6 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
   private inicializeSubscriptions() {
     this.subscription = this.dialogService.visible$
     .subscribe((newDialogState: boolean) => {
-
       // Manejamos la visibilidad según el
       // nuevo estado que se solicite que adopte
       // el componente.
@@ -118,15 +122,17 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
    * @private
    * @description
    * Método que inicia el proceso para ocultar
-   * el componente 
+   * el componente
    */
   private initProgressOfHideComponent() {
     if ( this.visible ) {
 
       this.dialogState = 'startHide';
+      this.changeDetector.markForCheck();
 
       setTimeout(() => {
         this.backmaskState = 'startHide';
+        this.changeDetector.markForCheck();
       }, 200);
 
 
@@ -134,6 +140,7 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
         this.visible = false;
         this.dialogState = 'wait';
         this.backmaskState = 'wait';
+        this.changeDetector.markForCheck();
       }, 1000);
 
     }// If
@@ -146,20 +153,23 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
    * @method
    * @private
    * @description
-   * Método que inicia el proceso para mostrar el 
+   * Método que inicia el proceso para mostrar el
    * componente en la vista donde este insertado.
    */
   private initProgressOfShowComponent() {
+
     if ( !this.visible ) {
 
       this.visible = true;
       this.backmaskState = 'startShow';
+      this.changeDetector.markForCheck();
 
       setTimeout(() => {
         this.dialogState = 'startShow';
+        this.changeDetector.markForCheck();
       }, 200);
-
     }// If
+
   }// InitProgressOfShowComponent
 
 
@@ -171,12 +181,12 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
    * @private
    * @description
    * Método que cierra el dialogo mediante
-   * la llamada al servicio para que sea el 
-   * servicio el que reactive el estado de todos 
+   * la llamada al servicio para que sea el
+   * servicio el que reactive el estado de todos
    * los componentes que se relacionan con este componente.
    */
   private closeDialog() {
-    this.dialogService.close('cancel-dialog');
+    this.dialogService.close( SystemDialogService.SYSTEM_DIALOG_CANCELED );
   }// CloseDialog
 
 

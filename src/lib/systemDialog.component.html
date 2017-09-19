@@ -1,6 +1,6 @@
 
 
-<div class="backmask animation" 
+<div class="backmask animation"
     *ngIf=" visible "  
     [class.fadeIn]=" backmaskState === 'startShow' " 
     [class.fadeOut]=" backmaskState === 'startHide' ">
@@ -20,8 +20,8 @@
     
 
     <div class="animation" [class.fadeInUp]=" dialogState === 'startShow' " [class.fadeOutDown]=" dialogState === 'startHide' ">
-      <a class="close-button" (click)=" closeDialog($event) "  >
-        <i class="material-icons">clear</i>
+      <a class="close-button" (click)=" closeDialog($event) " >
+        <i class="material-icons">close</i>
       </a>
     </div>
     
