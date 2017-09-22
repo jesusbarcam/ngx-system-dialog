@@ -22,12 +22,18 @@ type StatesOfDialog =  'startShow' | 'startHide' | 'wait'  ;
 
 export class SystemDialogComponent implements OnInit, OnDestroy {
 
+  
+  public readonly START_SHOW_STATE: StatesOfDialog = 'startShow';
+  public readonly START_HIDE_STATE: StatesOfDialog = 'startHide';
+  public readonly WAIT_STATE: StatesOfDialog = 'wait';
 
-  private visible: boolean;
-  private backmaskState: StatesOfDialog;
-  private dialogState: StatesOfDialog;
+
+  private _visible: boolean;
+  private _backmaskState: StatesOfDialog;
+  private _dialogState: StatesOfDialog;
+
+
   private subscription: Subscription;
-
 
   @ViewChild('dynamicContent', {read: ViewContainerRef })
   private viewContainerRef: ViewContainerRef;
@@ -41,9 +47,9 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
   constructor( private dialogService: SystemDialogService,
                private changeDetector: ChangeDetectorRef ) {
 
-    this.visible = false;
-    this.backmaskState = 'wait';
-    this.dialogState = 'wait';
+    this._visible = false;
+    this._backmaskState = this.WAIT_STATE;
+    this._dialogState = this.WAIT_STATE;
 
   }// Constructor
 
@@ -86,6 +92,7 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
   private inicializeSubscriptions() {
     this.subscription = this.dialogService.visible$
     .subscribe((newDialogState: boolean) => {
+      
       // Manejamos la visibilidad según el
       // nuevo estado que se solicite que adopte
       // el componente.
@@ -107,9 +114,11 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
    *
    */
   private handlerForVisibility( newState: boolean ) {
+
     if ( newState ) {
       return this.initProgressOfShowComponent();
     }// If
+
     this.initProgressOfHideComponent();
   }// HandlerFOrVisibility
 
@@ -125,21 +134,21 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
    * el componente
    */
   private initProgressOfHideComponent() {
-    if ( this.visible ) {
+    if ( this._visible ) {
 
-      this.dialogState = 'startHide';
+      this._dialogState = this.START_HIDE_STATE;
       this.changeDetector.markForCheck();
 
       setTimeout(() => {
-        this.backmaskState = 'startHide';
+        this._backmaskState = this.START_HIDE_STATE;
         this.changeDetector.markForCheck();
       }, 200);
 
 
       setTimeout(() => {
-        this.visible = false;
-        this.dialogState = 'wait';
-        this.backmaskState = 'wait';
+        this._visible = false;
+        this._dialogState = this.WAIT_STATE;
+        this._backmaskState = this.WAIT_STATE;
         this.changeDetector.markForCheck();
       }, 1000);
 
@@ -158,14 +167,13 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
    */
   private initProgressOfShowComponent() {
 
-    if ( !this.visible ) {
-
-      this.visible = true;
-      this.backmaskState = 'startShow';
+    if ( !this._visible ) {
+      this._visible = true;
+      this._backmaskState = this.START_SHOW_STATE;
       this.changeDetector.markForCheck();
 
       setTimeout(() => {
-        this.dialogState = 'startShow';
+        this._dialogState = this.START_SHOW_STATE;
         this.changeDetector.markForCheck();
       }, 200);
     }// If
@@ -188,6 +196,20 @@ export class SystemDialogComponent implements OnInit, OnDestroy {
   private closeDialog() {
     this.dialogService.close( SystemDialogService.SYSTEM_DIALOG_CANCELED );
   }// CloseDialog
+
+
+
+  public get visible() {
+    return this._visible;
+  }// Visible
+
+  public get backmaskState() {
+    return this._backmaskState;
+  }// BackmaskState
+
+  public get dialogState() {
+    return this._dialogState;
+  }// DialogState
 
 
 

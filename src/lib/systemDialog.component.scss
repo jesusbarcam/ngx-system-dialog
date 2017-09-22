@@ -44,12 +44,11 @@ $opacity-backmask: 0.8 !default;
   height: 100%;
   overflow: hidden !important;
 
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
   
   .wrapper-content {
-    opacity:0;
     display: flex;
     justify-content: flex-start;
 
