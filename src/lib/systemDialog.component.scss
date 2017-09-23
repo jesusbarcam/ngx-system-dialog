@@ -1,22 +1,35 @@
 
 
-$zIndex-backmask: 1900 !default;
+$zIndex-backmask: 2000 !default;
 $color-backmask:rgba(#000000,0.7) !default;
 $opacity-backmask: 0.8 !default;
+
+
+:host {
+  position: absolute;
+  top:0;
+  width: 100%;
+  z-index: -1;
+  
+  &.isActive {
+    z-index: 100;
+  }// isActive
+
+}// Host
+
+
 
 
 .backmask {
   position: fixed;
   width: 100%;
-  height: 100%;
-  left:0;
-  top:0;
-  bottom:0;
-  right:0;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
   background-color: $color-backmask;
-  opacity: $opacity-backmask !important;
-  z-index: $zIndex-backmask;
-  opacity:0;
+  opacity: 0;
   overflow: hidden !important;
 }//backmask
 
@@ -41,7 +54,7 @@ $opacity-backmask: 0.8 !default;
   @extend .z-index-element;
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden !important;
 
   display: flex;
@@ -49,25 +62,31 @@ $opacity-backmask: 0.8 !default;
   align-items: center;
   
   .wrapper-content {
+    opacity: 0;
     display: flex;
     justify-content: flex-start;
 
 
-    a {
+    a.close-button {
       @include shadow-element( 1px );
       @extend .no-select;
       @extend .z-index-element;
-      z-index: 120;
-      display:flex;
+      display: flex;
       color: #fff;
-      padding:0.4rem;
-      font-size: 3rem;
+      padding: 0.4rem;
       background-color: rgba(#ffffff,0.4);
-      margin-left:5px !important;
+      margin-left: 5px !important;
+
 
       &:hover {
         cursor: pointer;
       }//hover
+
+      i {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-style: normal !important;
+        font-size: 2rem;
+      }//i
 
     }//a
 
@@ -75,10 +94,9 @@ $opacity-backmask: 0.8 !default;
     .content {
       @include shadow-element( 0px );
       @extend .z-index-element;
-      min-width: 450px;
-      min-height: 300px;
-      border:2px solid red !important;
-      background-color: #fff !important;
+      min-width: 150px !important;
+      min-height: 100px !important;
+      background-color: #fff;
     }//content
 
   }//header-dialog
@@ -120,9 +138,6 @@ $opacity-backmask: 0.8 !default;
 
 
 
-
-
-
 @-webkit-keyframes fadeInDown {
   from {
     opacity: 0;
@@ -136,8 +151,6 @@ $opacity-backmask: 0.8 !default;
     transform: none;
   }
 }
-
-
 
 
 @keyframes fadeInDown {
@@ -158,11 +171,6 @@ $opacity-backmask: 0.8 !default;
   -webkit-animation-name: fadeInDown;
   animation-name: fadeInDown;
 }
-
-
-
-
-
 
 
 @-webkit-keyframes fadeOut {

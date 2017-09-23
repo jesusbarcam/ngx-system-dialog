@@ -14,12 +14,19 @@ export class AppComponent {
 
   constructor(private systemDialog: SystemDialogService) {}// Constructor
 
-  public openDialog() {
 
-    this.systemDialog.createDialog( DynamicDialogComponent ).result
+
+  /**
+   * @method
+   * @public
+   * @description
+   */
+  public openDialog(event: Event) {
+    console.log("LLEGA EL EVENTO DE INICIO A CREATE DIALOG!");
+    this.systemDialog.createDialog( DynamicDialogComponent, null, null ).result
     .subscribe(( result ) => {
       console.log( 'CLOSE AND RESULT OF SYSTEM DIALOG! ' );
-    });
+    }); // CreateDialog
 
   }// OpenDialog
 

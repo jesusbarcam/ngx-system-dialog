@@ -1,6 +1,11 @@
 import { Injectable, ComponentFactoryResolver, ViewContainerRef, TemplateRef, ComponentRef } from '@angular/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 
+import { SystemDialogSetup } from './models/systemDialogSetup.model';
+
+
+export * from './models/SystemDialogSetup.model';
+
 
 
 
@@ -62,14 +67,16 @@ export class SystemDialogService {
 
 
 
+
+
   /**
    * @method
    * @public
    * @param viewContainerRef
    * @description
    */
-  public createDialog<T>( templateOrComponentRef: any, payload?: any) {
-
+  public createDialog<T>( templateOrComponentRef: any, payload?: any, setup?: SystemDialogSetup) {
+    console.log("CREATE DIALOG IN SYSTEM DIALOG SERVICE!");
     // Chequeamos que el contenedor donde vamos a
     // añadir la modal que vamos a crear este correctamente formada.
     this.checkModalContainer();

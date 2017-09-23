@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { SystemDialogService } from './systemDialog.service'; 
+import { SystemDialogService } from './systemDialog.service';
 
 
 @Injectable()
 export class DialogRef {
-  
+
 
   constructor(private systemDialogService: SystemDialogService) {
   }// Constructor
